@@ -1,0 +1,332 @@
+/* Salaya & Phutthamonthon Carbon Credit Digital Map Styles */
+
+:root {
+    --bg-dark: #090d16;
+    --bg-panel: rgba(15, 23, 42, 0.85);
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --border-glow: rgba(16, 185, 129, 0.3);
+    --emerald-primary: #10b981;
+    --emerald-glow: rgba(16, 185, 129, 0.5);
+    --cyan-accent: #06b6d4;
+    --lime-accent: #84cc16;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --panel-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Sarabun", "Kanit", Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Map Container */
+#map {
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+    background: #060b13;
+}
+
+/* Glassmorphism Panel Utility */
+.glass-panel {
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    border-radius: 14px;
+    box-shadow: var(--panel-shadow);
+}
+
+.glass-panel:hover {
+    border-color: var(--border-glow);
+}
+
+/* Top Header Telemetry HUD */
+.hud-header {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    pointer-events: auto;
+}
+
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--emerald-primary);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.pulsing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #10b981;
+    animation: pulse-glow 1.8s infinite;
+}
+
+@keyframes pulse-glow {
+    0% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 4px #10b981; }
+    50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #10b981; }
+    100% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 4px #10b981; }
+}
+
+/* Telemetry Counters */
+.metric-capsule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px 16px;
+    border-radius: 10px;
+}
+
+.metric-value {
+    font-size: 19px;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    color: #34d399;
+}
+
+/* Floating Sidebar (Left) */
+.dock-sidebar {
+    position: absolute;
+    top: 92px;
+    left: 20px;
+    bottom: 28px;
+    width: 360px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    pointer-events: none;
+}
+
+.dock-sidebar > * {
+    pointer-events: auto;
+}
+
+.scroll-container {
+    overflow-y: auto;
+    max-height: calc(100vh - 140px);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(16, 185, 129, 0.4) transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+    width: 5px;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.4);
+    border-radius: 10px;
+}
+
+/* Inspector Drawer (Right) */
+.inspector-panel {
+    position: absolute;
+    top: 92px;
+    right: 20px;
+    bottom: 28px;
+    width: 420px;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(6, 182, 212, 0.4) transparent;
+}
+
+.inspector-panel.collapsed {
+    transform: translateX(450px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Custom Leaflet Sensor Icon */
+.sensor-marker-pin {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(6, 182, 212, 0.25);
+    border: 2px solid #06b6d4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+}
+
+.sensor-marker-pin::after {
+    content: '';
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid #06b6d4;
+    animation: radar-wave 2s infinite ease-out;
+}
+
+@keyframes radar-wave {
+    0% { transform: scale(0.6); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Leaflet Custom Popup */
+.leaflet-popup-content-wrapper {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    color: #f1f5f9 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7) !important;
+}
+
+.leaflet-popup-tip {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Toggle Switches */
+.switch-input {
+    appearance: none;
+    width: 40px;
+    height: 22px;
+    background: #334155;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.25s ease;
+}
+
+.switch-input:checked {
+    background: #10b981;
+}
+
+.switch-input::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.25s ease;
+}
+
+.switch-input:checked::before {
+    transform: translateX(18px);
+}
+
+/* Species Chip */
+.species-chip {
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 11px;
+    color: #cbd5e1;
+    margin: 2px;
+}
+
+/* Button glow */
+.btn-emerald {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+}
+
+.btn-emerald:hover {
+    background: linear-gradient(135deg, #047857 0%, #059669 100%);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55);
+    transform: translateY(-1px);
+}
+
+.btn-cyan {
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+}
+
+.btn-cyan:hover {
+    background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.55);
+    transform: translateY(-1px);
+}
+
+/* Diurnal Simulation Slider */
+.range-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #334155;
+    outline: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #f59e0b;
+    border: 2px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 0 10px #f59e0b;
+    transition: transform 0.15s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Modal Overlay */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    max-width: 680px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
